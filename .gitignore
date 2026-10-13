@@ -1,0 +1,23 @@
+# Virtual Environment
+venv/
+env/
+.venv/
+
+# Environment variables (chứa API Keys bí mật)
+.env
+.env.local
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+
+# IDE & Editor
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
