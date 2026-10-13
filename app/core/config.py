@@ -4,6 +4,8 @@ from typing import Literal
 class Settings(BaseSettings):
     PROJECT_NAME: str = "Automatic Calling API"
     API_V1_STR: str = "/api/v1"
+    PORT: int = 8010
+    ROOT_PATH: str = "/api/voice"
     
     # VN Doctor Backend URL
     VN_DOCTOR_API_BASE_URL: str = "https://api-navi-doctor.tomotek.vn/api"
