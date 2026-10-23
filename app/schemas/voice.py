@@ -5,8 +5,14 @@ from pydantic import BaseModel, Field
 class VoiceResponseStatus(str, Enum):
     SUCCESS = "SUCCESS"                    # Đã gọi API BE thành công
     NEED_MORE_INFO = "NEED_MORE_INFO"      # Cần hỏi thêm thông tin còn thiếu
+    PENDING_CONFIRMATION = "PENDING_CONFIRMATION"  # Chờ bệnh nhân xác nhận (tầng MODERATE)
     UNKNOWN_INTENT = "UNKNOWN_INTENT"      # Chưa hiểu ý định người dùng
     ERROR = "ERROR"                        # Lỗi gọi BE hoặc logic
+
+class UrgencyLevel(str, Enum):
+    URGENT = "URGENT"      # 🔴 Nguy hiểm tính mạng → gọi API ngay
+    MODERATE = "MODERATE"  # 🟡 Triệu chứng thực nhưng không nguy hiểm → xác nhận nhanh
+    LOW = "LOW"            # 🟢 Hỏi thăm, thắc mắc → không gọi API
 
 class VoiceRequestContext(BaseModel):
     health_profile_id: Optional[str] = Field(default=None, description="Hồ sơ sức khỏe bệnh nhân đang chọn trên App (UUID)")
@@ -21,6 +27,7 @@ class VoiceCommandResponse(BaseModel):
     status: VoiceResponseStatus
     session_id: str
     intent: Optional[str] = None
+    urgency: Optional[UrgencyLevel] = Field(default=None, description="Mức độ khẩn cấp: URGENT/MODERATE/LOW")
     response_message: str = Field(..., description="Câu phản hồi tự nhiên để App hiển thị và đọc TTS cho bệnh nhân")
     missing_fields: Optional[List[str]] = None
     collected_data: Optional[Dict[str, Any]] = None
